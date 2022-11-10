@@ -3,8 +3,13 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+///
+///this is task model
+///
+
 // ignore: must_be_immutable
 class Task extends Equatable {
+  final String id;
   final String title;
   bool? isDone;
   bool? isDeleted;
@@ -12,17 +17,19 @@ class Task extends Equatable {
   final DateTime created;
 
   Task({
+    required this.id,
     required this.title,
     this.isDone,
     this.isDeleted,
     required this.description,
     required this.created,
-  }) {
+  }) : super() {
     isDone = isDone ?? false;
     isDeleted = isDeleted ?? false;
   }
 
   Task copyWith({
+    String? id,
     String? title,
     bool? isDone,
     bool? isDeleted,
@@ -30,6 +37,7 @@ class Task extends Equatable {
     DateTime? created,
   }) {
     return Task(
+      id: id ?? this.id,
       title: title ?? this.title,
       isDone: isDone ?? this.isDone,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -40,6 +48,7 @@ class Task extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'title': title,
       'isDone': isDone,
       'isDeleted': isDeleted,
@@ -50,6 +59,7 @@ class Task extends Equatable {
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
+      id: map['id'] as String,
       title: map['title'] as String,
       isDone: map['isDone'] != null ? map['isDone'] as bool : null,
       isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
@@ -59,7 +69,8 @@ class Task extends Equatable {
   }
 
   @override
-  List<Object?> get props => [title, isDone, isDeleted];
+  List<Object?> get props =>
+      [id, title, description, isDone, isDeleted, created];
 
   String toJson() => json.encode(toMap());
 

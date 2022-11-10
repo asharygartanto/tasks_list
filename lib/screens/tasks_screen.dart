@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:tasks_list/blocs/bloc_exports.dart';
 
 import '../models/task.dart';
+import '../widgets/tasks_filter.dart';
 import '../widgets/tasks_list.dart';
+import '../widgets/tasks_sort.dart';
 import 'add_task_screen.dart';
+
+///
+///this page is the main page
+///this page will call bottom sheet widget, button filter, button sorting and
+///call list page
+///
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({Key? key}) : super(key: key);
@@ -35,40 +43,7 @@ class _TasksScreenState extends State<TasksScreen> {
               padding: const EdgeInsets.all(40),
               //padding: EdgeInsets.only(
               //    bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                      ),
-                      child: Text('All', style: TextStyle(fontSize: 16)),
-                      onPressed: () {
-                        print('all');
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                      ),
-                      child: Text('Completed'),
-                      onPressed: () {
-                        print('completed');
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                      ),
-                      child: Text('Uncompleted'),
-                      onPressed: () {
-                        print('completed');
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ]),
+              child: const FilterTask(),
             ))));
   }
 
@@ -79,37 +54,19 @@ class _TasksScreenState extends State<TasksScreen> {
         builder: ((context) => SingleChildScrollView(
                 child: Container(
               padding: const EdgeInsets.all(40),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                      ),
-                      child: Text('Newest'),
-                      onPressed: () {
-                        print('completed');
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                      ),
-                      child: Text('Oldest'),
-                      onPressed: () {
-                        print('oldest');
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ]),
+              child: const SortTask(),
             ))));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TasksBloc, TasksState>(
-      builder: (context, state) {
+    return BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
+      if (state is TasksLoadingState) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      if (state is TasksLoadedState) {
         List<Task> tasksList = state.allTasks;
         return Scaffold(
           appBar: AppBar(
@@ -128,17 +85,23 @@ class _TasksScreenState extends State<TasksScreen> {
                 child: Chip(
                   label: Text(
                     'Your Tasks:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 FloatingActionButton(
-                  backgroundColor: Colors.blue,
+                  heroTag: '1',
+                  backgroundColor: Colors.purple,
                   onPressed: () => _filterTask(context),
                   child: const Text('Filter'),
                 ),
                 FloatingActionButton(
-                  backgroundColor: Colors.blue,
+                  heroTag: '2',
+                  backgroundColor: Colors.purple,
                   onPressed: () => _sortTask(context),
                   child: const Text('Sort'),
                 ),
@@ -147,7 +110,8 @@ class _TasksScreenState extends State<TasksScreen> {
             ],
           ),
         );
-      },
-    );
+      }
+      return const Text('gone wrong');
+    });
   }
 }
