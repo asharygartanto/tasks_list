@@ -1,16 +1,15 @@
 # tasks_list
 
-A new Flutter project.
+A tasks todo project for demo.
+demo mobile apps using flutter and Bloc.
+
+1. add task list (id(uuid),title, description, datetime created, status : completed, status : deleted)
+2. update task completed or uncompleted (check/uncheck)
+3. delete task
+4. filter completed/uncompleted
+5. sort by datetime(oldest/newest)
+
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
